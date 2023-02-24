@@ -66,3 +66,81 @@
 
 
         <h4>Employee Details</h4>
+        
+          <%Dim con As System.Data.SqlClient.SqlConnection
+            Dim cmd As System.Data.SqlClient.SqlCommand
+            Dim dr As System.Data.SqlClient.SqlDataReader
+
+
+            Try
+                con = New System.Data.SqlClient.SqlConnection("Data Source=GUNA;Initial Catalog=dbase;Integrated Security=True")
+
+                con.Open()
+
+                cmd = New System.Data.SqlClient.SqlCommand
+
+                cmd.CommandText = "EmployeeList"
+
+                cmd.CommandType = System.Data.CommandType.StoredProcedure
+
+                cmd.Connection = con
+
+                dr = cmd.ExecuteReader()
+
+                %>
+        <table border="1" >
+
+            <tr>
+                <td>EmployeeName</td>
+                <td>Gender</td>
+                <td>Qualification</td>
+                <td>Terms and Condition</td>
+                <td>Action</td>
+
+            </tr>
+       
+
+
+
+            <%
+                    While dr.Read()
+                        %>
+            <tr>
+                <td><%=dr("EmployeeName")%></td>
+                <td><%=dr("Gender")%></td>
+                <td><%=dr("Qualification")%></td>
+                <td><%=dr("Terms")%></td>
+                <td>
+                    <a href ="EmployeeRegistration.aspx?Mode=E&EmpId=<%=dr("EmpId")%>" >Edit</a>
+                    <a href ="EmployeeRegistration.aspx?Mode=D&EmpId=<%=dr("EmpId")%>" onclick="return confirm('Are you sure want to delete ?')" >Delete</a>
+
+                </td>
+
+
+            </tr>
+         <% End While %>   
+                   </table>
+
+
+            <%
+
+
+
+
+
+
+                Catch ex As Exception
+
+                   %>
+
+            <span><%=ex.Message%></span>
+
+            <%
+
+                End Try %>
+
+
+    </form>
+</body>
+</html>
+
