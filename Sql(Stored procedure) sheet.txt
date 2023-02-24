@@ -1,0 +1,92 @@
+
+create database dbase
+
+String conn = Configurationmanager.ConnectionStrings["myConnection"].connectionString;
+
+create table Employee(EmpId int primary key identity(1,1),EmployeeName varchar(25),Gender int ,Qualification varchar(20),Terms varchar(5))
+
+
+create table masGender (GenderId int primary key identity(1,1),Gender int ,Disp int)
+
+alter table  masgender  alter column gender varchar(15)
+
+insert  into   masgender values('Male',1)
+insert  into   masgender values('Female',2)
+insert  into   masgender values('Other',3)
+
+select *  from Masgender
+
+truncate table masgender
+
+create procedure Gender 
+as
+begin 
+
+select GenderId,Gender from masGender order by Disp 
+end
+
+----------
+
+create procedure EmployeeAdd
+@EmployeeName varchar(25),
+@Gender int ,
+@Qualification varchar(20),
+@Terms varchar(5)
+as
+begin 
+
+insert into Employee values(@EmployeeName ,@Gender ,@Qualification ,@Terms)
+
+
+end
+
+
+
+---------------------
+
+create procedure EmployeeList
+as
+Begin
+Select EmpId,EmployeeName,masGender .Gender ,Qualification,terms from Employee 
+inner join masGender on masGender.GenderId =Employee .Gender 
+end
+
+
+-----------------------------------------------------
+
+
+
+create procedure EmployeeDelete
+@EmpId int
+as
+Begin
+delete  from employee Where EmpId=@EmpId 
+end
+
+
+-------------------------
+
+
+
+
+create procedure EmployeeDetails
+@EmpId int
+as
+Begin
+select * from employee Where EmpId=@EmpId 
+end
+
+---------------
+
+alter procedure EmployeeUpdate
+@EmpId int,
+@EmployeeName varchar(25),
+@Gender int ,
+@Qualification varchar(20),
+@Terms varchar(5)
+as
+begin 
+
+update Employee set  EmployeeName=@EmployeeName ,Gender=@Gender,Qualification=@Qualification ,Terms=@Terms
+where EmpId=@EmpId
+end
